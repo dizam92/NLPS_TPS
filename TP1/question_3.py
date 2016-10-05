@@ -3,10 +3,8 @@ __author__ = 'maoss2'
 import numpy as np
 import pandas as pd
 import csv
-import re
-import ast
+from itertools import permutations
 from collections import defaultdict
-from time import time
 
 start_phrase = "<s>"
 end_phrase = "</s>"
@@ -116,7 +114,6 @@ def unigram_model(list_of_words, unigram_count, N=count_token()):
     Params: list_of_words: list of the unique word to be learned
             unigram_count: dictionnary of the count of the words in the corpus"""
     d = pd.read_csv(unigram_count)
-    # proba_matrix = defaultdict(float)
     proba_dict = {list_of_words[i]: (d[el].values[0] / float(N)) if el in d.columns.values else 0.0 for i, el in enumerate(list_of_words) }
     return proba_dict
 
@@ -277,218 +274,175 @@ def interpolation_trigram_model(list_of_words, unigram_count, bigram_count, trig
                            else lambda3 * (uni_count[list_of_words[i]].values[0] / float(N)) for i in xrange(len(list_of_words) - 2)}
     return proba_dict
 
-def probability_builder(n, number_of_token):
-    """ Build the matrix of the probability for the 1, 2, 3 gram"""
-    if n == 1:
-        d = pd.read_csv("unigram_count_dictionnary.csv")
-        d.columns.values.sort()
-        unigram_probability = d.values / float(number_of_token)
-        temp_list = [(index,cle) for index, cle in enumerate(np.sort(d.columns.values))]
-        return unigram_probability, temp_list
+def perplexity_unigram_model(test_set, model_probability_of_the_test_set):
+    log_proba = 0
+    N = len(test_set)
+    for el in test_set:
+        log_proba += np.log10(model_probability_of_the_test_set[el])
+    return np.exp(- log_proba / float(N))
 
-    # Explications: Construire une matrice carré de words² elements. Pour chaque mot (Vu que c'est trié c'est dans le meme ordre)
-    # regarder si le mot se retrouve au niveau w_(i-1) du bigram soit la position 2 dans le bigram,
-    # si oui, on calcule le c(w_i, w_(i-1))/c(w_i) et mettre dans la matrice à la position (w_(i-1), w_i)
-    if n == 2:
-        linked_words = pd.read_csv("finaldictionnary.csv")
-        bigram_proba_arrays = np.zeros((linked_words.columns.size, linked_words.columns.size), dtype=float)
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        for index, cle in enumerate(np.sort(linked_words.columns.values)):
-            bigram_list = ast.literal_eval(linked_words[cle][0])[0]  # get the list of the bigram only
-            for el in bigram_list:
-                words = el.split(" ")
-                if words[1] == cle: # look if 2nd word is key
-                    bigram_proba_arrays[index, np.where(linked_words.columns.values == words[0])[0][0]] = data_bi[el] / float(data_uni[words[0]])
-        temp_list = [(index, cle) for index, cle in enumerate(np.sort(data_uni.columns.values))]
-        return bigram_proba_arrays, temp_list
+def perplexity_bigram_model(test_set, model_probability_of_the_test_set):
+    log_proba = 0
+    N = len(test_set)
+    for i in xrange(len(test_set) - 1):
+        if model_probability_of_the_test_set[test_set[i] + " " + test_set[i+1]] != 0:
+            log_proba += np.log10(model_probability_of_the_test_set[test_set[i] + " " + test_set[i+1]])
+    return np.exp(- log_proba / float(N))
 
-    if n == 3:
-        linked_words = pd.read_csv("finaldictionnary.csv")
-        data_tri = pd.read_csv("trigram_count_dictionnary.csv")
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        # data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        trigram_proba_arrays = np.zeros((linked_words.columns.size, data_bi.columns.size), dtype=float)
-        for index, cle in enumerate(np.sort(linked_words.columns.values)):
-            trigram_list = ast.literal_eval(linked_words[cle][0])[1]  # get the list of the bigram only
-            for el in trigram_list:
-                words = el.split(" ")
-                if words[2] == cle:
-                    trigram_proba_arrays[index, np.where(np.sort(data_bi.columns.values) == words[words[0] + " " + words[1]])[0][0]] = \
-                        data_tri[el] / float(data_bi[words[0] + " " + words[1]])
+def perplexity_trigram_model(test_set, model_probability_of_the_test_set):
+    log_proba = 0
+    N = len(test_set)
+    for i in xrange(len(test_set) - 2):
+        if model_probability_of_the_test_set[test_set[i] + " " + test_set[i + 1] + " " + test_set[i + 2]] != 0:
+            log_proba += np.log10(model_probability_of_the_test_set[test_set[i] + " " + test_set[i + 1] + " " + test_set[i + 2]])
+    return np.exp(- log_proba / float(N))
 
-        temp_list_ligne = [(index, cle) for index, cle in enumerate(np.sort(linked_words.columns.values))]
-        temp_list_col = [(index, cle) for index, cle in enumerate(np.sort(data_bi.columns.values))]
-        return trigram_proba_arrays, [temp_list_ligne, temp_list_col]
+def generate_sentence(ligne):
+    """ Take a line, split it in words and return all the possible combinaison into a list of list"""
+    return [subset for subset in permutations(ligne, len(ligne))]
 
-def lissage_add_delta(n, number_of_token, delta):
-    """ Apply the add_delta lissage to the matrix"""
-    assert 0 <= delta <= 1, "Delta must be between 0 and 1"
-    if n == 1:
-        d = pd.read_csv("unigram_count_dictionnary.csv")
-        d.columns.values.sort()
-        unigram_probability = (d.values + delta) / float((number_of_token + d.columns.values.size))
-        temp_list = [(index, cle) for index, cle in enumerate(np.sort(d.columns.values))]
-        return unigram_probability, temp_list
+def bigram_experiments(test_file, laplace=None, interpolation=None):
+    if laplace is None and interpolation is None:
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp}
+                sentences = generate_sentence(d)
+                print sentences
+                model_bi = bigram_model(list_of_words=d, unigram_count="unigram_count_dictionnary.csv",
+                                        bigram_count="bigram_count_dictionnary.csv")
+                if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
+                    pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
+                    best_sentence["sentence"] = " ".join(d)
+                    best_sentence["pp"] = pp
+                print best_sentence
 
-    if n == 2:
-        linked_words = pd.read_csv("finaldictionnary.csv")
-        bigram_proba_arrays = np.zeros((linked_words.columns.size, linked_words.columns.size), dtype=float)
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        for index1, cle1 in enumerate(np.sort(linked_words.columns.values)):
-            for index2, cle2 in enumerate(np.sort(linked_words.columns.values)):
-                temp_word = cle1 + " " + cle2
-                if temp_word in data_bi.columns.values:
-                    bigram_proba_arrays[index1, index2] = (data_bi[temp_word] + delta) / float((data_uni[cle1] + data_uni.columns.values.size))
-                else:
-                    bigram_proba_arrays[index1, index2] = 1 / float((data_uni[cle1] + data_uni.columns.values.size))
-        temp_list = [(index, cle) for index, cle in enumerate(np.sort(data_uni.columns.values))]
-        return bigram_proba_arrays, temp_list
+    elif laplace:
+        delta_list = [0.1, 0.002, 0.5, 0.01, 0.05, 0.8]
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp, "delta": 0}
+                sentences = generate_sentence(d)
+                print sentences
+                for delta in delta_list:
+                    model_bi = laplace_delta_bigram_model(list_of_words=d,
+                                                                  unigram_count="unigram_count_dictionnary.csv",
+                                                                  bigram_count="bigram_count_dictionnary.csv",
+                                                                  delta=delta)
+                    if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
+                        pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
+                        best_sentence["sentence"] = " ".join(d)
+                        best_sentence["pp"] = pp
+                        best_sentence["delta"] = delta
+                print best_sentence
 
-    if n == 3:
-        linked_words = pd.read_csv("finaldictionnary.csv")
-        data_tri = pd.read_csv("trigram_count_dictionnary.csv")
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        # data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        trigram_proba_arrays = np.zeros((linked_words.columns.size, data_bi.columns.size), dtype=float)
-        for index1, cle1 in enumerate(np.sort(linked_words.columns.values)):
-            for index2, cle2 in enumerate(np.sort(data_bi.columns.values)):
-                temp_word = cle1 + " " + cle2
-                if temp_word in data_tri.columns.values:
-                    trigram_proba_arrays[index1, index2] = \
-                        (data_tri[temp_word] + delta) / float((data_bi[temp_word] + linked_words.columns.values.size))
-                else:
-                    trigram_proba_arrays[index1, index2] = 1 / float((data_bi[temp_word] + linked_words.columns.values.size))
-        temp_list_ligne = [(index, cle) for index, cle in enumerate(np.sort(linked_words.columns.values))]
-        temp_list_col = [(index, cle) for index, cle in enumerate(np.sort(data_bi.columns.values))]
-        return trigram_proba_arrays, [temp_list_ligne, temp_list_col]
+    elif interpolation:
+        lambda2 = [0.002, 0.5, 0.01]
+        lambda3 = [0.1, 0.5, 0.8]
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp, "l2": 0, "l3": 0}
+                sentences = generate_sentence(d)
+                print sentences
+                for l2 in lambda2:
+                    for l3 in lambda3:
+                        model_bi_interpol = interpolation_bigram_model(list_of_words=d,
+                                                                       unigram_count="unigram_count_dictionnary.csv",
+                                                                       bigram_count="bigram_count_dictionnary.csv",
+                                                                       lambda2=l2, lambda3=l3)
+                        if perplexity_bigram_model(test_set=d,
+                                                   model_probability_of_the_test_set=model_bi_interpol) < pp:
+                            pp = perplexity_bigram_model(test_set=d,
+                                                         model_probability_of_the_test_set=model_bi_interpol)
+                            best_sentence["sentence"] = " ".join(d)
+                            best_sentence["pp"] = pp
+                            best_sentence["l2"] = l2
+                            best_sentence["l3"] = l3
+                print best_sentence
 
+def trigram_experiments(test_file, laplace=None, interpolation=None):
+    if laplace is None and interpolation is None:
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp}
+                sentences = generate_sentence(d)
+                print sentences
+                model_tri = trigram_model(list_of_words=d, bigram_count="bigram_count_dictionnary.csv", trigram_count="trigram_count_dictionnary.csv")
+                if perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri) < pp:
+                    pp = perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri)
+                    best_sentence["sentence"] = " ".join(d)
+                    best_sentence["pp"] = pp
+                print best_sentence
 
-def lissage_interpolation(n, number_of_token, lambda1=0.001, lambda2=0.001, lambda3=0.001):
-    """ Apply the interpolation lissage"""
-    if n == 1:
-        assert 0 < lambda3 <= 1, "wrong value"
-        d = pd.read_csv("unigram_count_dictionnary.csv")
-        d.columns.values.sort()
-        unigram_probability = lambda3 * (d.values / float(number_of_token))
-        temp_list = [(index, cle) for index, cle in enumerate(np.sort(d.columns.values))]
-        return unigram_probability, temp_list
+    elif laplace:
+        delta_list = [0.1, 0.002, 0.5, 0.01, 0.05, 0.8]
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp, "delta": 0}
+                sentences = generate_sentence(d)
+                print sentences
+                for delta in delta_list:
+                    model_tri = laplace_delta_trigram_model(list_of_words=d,
+                                                          unigram_count="unigram_count_dictionnary.csv",
+                                                          bigram_count="bigram_count_dictionnary.csv",
+                                                          trigram_count="trigram_count_dictionnary.csv",
+                                                          delta=delta)
+                    if perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri) < pp:
+                        pp = perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri)
+                        best_sentence["sentence"] = " ".join(d)
+                        best_sentence["pp"] = pp
+                        best_sentence["delta"] = delta
+                print best_sentence
 
-    if n == 2:
-        assert 0 < lambda3 <= 1, "wrong value"
-        assert 0 < lambda2 <= 1, "wrong value"
-        assert 0 < lambda2 + lambda3 <= 1, "wrong value"
-        data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        linked_words = pd.read_csv("finaldictionnary.csv")
-        bigram_proba_arrays = np.zeros((linked_words.columns.size, linked_words.columns.size), dtype=float)
-        for index1, cle1 in enumerate(np.sort(linked_words.columns.values)):
-            for index2, cle2 in enumerate(np.sort(linked_words.columns.values)):
-                temp_word = cle1 + " " + cle2
-                if temp_word in data_bi.columns.values:
-                    bigram_proba_arrays[index1, index2] = lambda2 * (data_bi[temp_word] / float(data_uni[cle1])) + \
-                                                          lambda3 * (data_uni[cle1] / float(number_of_token))
-                else:
-                    bigram_proba_arrays[index1, index2] = lambda3 * (data_uni[cle1] / float(number_of_token))
-        temp_list = [(index, cle) for index, cle in enumerate(np.sort(data_uni.columns.values))]
-        return bigram_proba_arrays, temp_list
-
-    if n == 3:
-        assert 0 < lambda3 <= 1, "wrong value"
-        assert 0 < lambda2 <= 1, "wrong value"
-        assert 0 < lambda1 <= 1, "wrong value"
-        assert 0 < lambda1+lambda2+lambda3 <= 1, "wrong value"
-        data_tri = pd.read_csv("trigram_count_dictionnary.csv")
-        data_bi = pd.read_csv("bigram_count_dictionnary.csv")
-        data_uni = pd.read_csv("unigram_count_dictionnary.csv")
-        trigram_proba_arrays = np.zeros((data_uni.columns.size, data_bi.columns.size), dtype=float)
-        for index1, cle1 in enumerate(np.sort(data_uni.columns.values)):
-            for index2, cle2 in enumerate(np.sort(data_bi.columns.values)):
-                temp_word = cle1 + " " + cle2
-                if temp_word in data_tri.columns.values:
-                    trigram_proba_arrays[index1, index2] = lambda1 * data_tri[temp_word] / float(data_bi[cle2]) + \
-                                                           lambda2 * (data_bi[cle2] / float(data_uni[cle1])) + \
-                                                           lambda3 * (data_uni[cle1] / float(number_of_token))
-                elif cle2 in data_bi.columns.values:
-                    trigram_proba_arrays[index1, index2] = lambda2 * (data_bi[cle2] / float(data_uni[cle1])) + \
-                                                            lambda3 * (data_uni[cle1] / float(number_of_token))
-                else:
-                    trigram_proba_arrays[index1, index2] = lambda3 * (data_uni[cle1] / float(number_of_token))
-        temp_list_ligne = [(index, cle) for index, cle in enumerate(np.sort(linked_words.columns.values))]
-        temp_list_col = [(index, cle) for index, cle in enumerate(np.sort(data_bi.columns.values))]
-        return trigram_proba_arrays, [temp_list_ligne, temp_list_col]
-
-def perplexity_calcul(n, testset, model, list_unigram=None, list_bigram=None, list_trigram=None):
-    if n == 1:
-        index, cle = zip(*list_unigram)
-        index = np.asarray(index)
-        cle = np.asarray(cle)
-        # testset = testset.split(" ")
-        log_proba = 0
-        N = 0
-        for word in testset:
-            N += 1
-            pos = np.where(cle == word)[0][0]
-            log_proba += np.log2(model[:, pos])
-        perplexity = np.exp(- log_proba / float(N))
-        return perplexity
-
-    if n == 2:
-        index, cle = zip(*list_bigram)
-        index = np.asarray(index)
-        cle = np.asarray(cle)
-        # testset = testset.split(" ")
-        log_proba = 0
-        N = 0
-        for i in xrange(len(testset)-1):
-            N += 1
-            lign = np.where(cle == testset[i])[0][0]
-            col = np.where(cle == testset[i+1])[0][0]
-            log_proba += np.log2(model[lign][col])
-        perplexity = np.exp(- log_proba / float(N))
-        return perplexity
-
-    if n == 3:
-        index_ligne, cle_ligne = zip(*list_trigram[0])
-        index_col, cle_col = zip(*list_trigram[1])
-        index_ligne = np.asarray(index_ligne)
-        cle_ligne = np.asarray(cle_ligne)
-        index_col = np.asarray(index_col)
-        cle_col = np.asarray(cle_col)
-        # testset = testset.split(" ")
-        log_proba = 0
-        N = 0
-        for i in xrange(len(testset) - 2):
-            N += 1
-            biwords = testset[i + 1] + testset[i + 2]
-            lign = np.where(cle_ligne == testset[i])[0][0]
-            col = np.where(cle_col == biwords)[0][0]
-            log_proba += np.log2(model[lign][col])
-        perplexity = np.exp(- log_proba / float(N))
-        return perplexity
-
-def unigram_experience(fichier_test):
-    proba_matrix, indx_and_names = probability_builder(2, number_of_token=count_token())
-    proba_lissage_matrix, indx_and_names_lissages = lissage_add_delta(2, number_of_token=count_token(), delta=0.05)
-    proba_interpolation_matrix, indx_and_names_interpolation = lissage_interpolation(2, number_of_token=count_token(), lambda1=0.05)
-    exit()
-    with open(fichier_test, 'r') as fichier:
-        lignes = fichier.readlines()
-        data = [line[:-1].split(" ") for line in lignes]
-        data = data[:1]
-        for d in data:
-            pp = perplexity_calcul(n=1, testset=d, model=proba_matrix, list_unigram=indx_and_names)
-            print pp
-            pp = perplexity_calcul(n=1, testset=d, model=proba_lissage_matrix, list_unigram=indx_and_names_lissages)
-            print pp
-            pp = perplexity_calcul(n=1, testset=d, model=proba_interpolation_matrix, list_unigram=indx_and_names_interpolation)
-            print pp
-
+    elif interpolation:
+        lambda1 = [0.03, 0.5]
+        lambda2 = [0.2, 0.4]
+        lambda3 = [0.3, 0.8]
+        with open(test_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            for d in data:
+                pp = 1e10000
+                best_sentence = {"sentence": " ", "pp": pp, "l1": 0, "l2": 0, "l3": 0}
+                sentences = generate_sentence(d)
+                print sentences
+                for l1 in lambda1:
+                    for l2 in lambda2:
+                        for l3 in lambda3:
+                            model_bi_interpol = interpolation_trigram_model(list_of_words=d,
+                                                                            unigram_count="unigram_count_dictionnary.csv",
+                                                                            bigram_count="bigram_count_dictionnary.csv",
+                                                                            trigram_count="trigram_count_dictionnary.csv",
+                                                                            lambda1=l1, lambda2=l2, lambda3=l3)
+                            if perplexity_trigram_model(test_set=d,
+                                                        model_probability_of_the_test_set=model_bi_interpol) < pp:
+                                pp = perplexity_trigram_model(test_set=d,
+                                                              model_probability_of_the_test_set=model_bi_interpol)
+                                best_sentence["sentence"] = " ".join(d)
+                                best_sentence["pp"] = pp
+                                best_sentence["l1"] = l1
+                                best_sentence["l2"] = l2
+                                best_sentence["l3"] = l3
+                print best_sentence
 
 def main():
-    count_n_gram()
-    unigram_experience(fichier_test="listes_en_desordre.txt")
+    # count_n_gram()
+    bigram_experiments(test_file="listes_en_desordre.txt")
+    trigram_experiments(test_file="listes_en_desordre.txt")
 
 if __name__ == '__main__':
     main()
