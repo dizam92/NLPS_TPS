@@ -5,7 +5,7 @@ import pandas as pd
 import csv
 from itertools import permutations
 from collections import defaultdict
-
+import random
 start_phrase = "<s>"
 end_phrase = "</s>"
 def count_token():
@@ -104,10 +104,10 @@ def count_n_gram():
     count_2_gram()
     print "Counting 3 gram......"
     count_3_gram()
-    print "Linking the n gram keys......"
-    linked_dictionnary_builder(unigram_file="unigram_count_dictionnary.csv",
-                               bigram_file="bigram_count_dictionnary.csv",
-                               trigram_file="trigram_count_dictionnary.csv")
+    # print "Linking the n gram keys......"
+    # linked_dictionnary_builder(unigram_file="unigram_count_dictionnary.csv",
+    #                            bigram_file="bigram_count_dictionnary.csv",
+    #                            trigram_file="trigram_count_dictionnary.csv")
 
 def unigram_model(list_of_words, unigram_count, N=count_token()):
     """ Compute the MLE for unigram model
@@ -234,16 +234,34 @@ def laplace_delta_trigram_model(list_of_words, unigram_count, bigram_count, trig
     uni_count = pd.read_csv(unigram_count)
     bigram_count = pd.read_csv(bigram_count)
     trigram_count = pd.read_csv(trigram_count)
-    proba_dict = {list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]:
+    temp_list = []
+    for i in xrange(len(list_of_words) - 2):
+        # print list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]
+        # trigram in dictionnary and bigram exists too
+
+        if list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2] in trigram_count.columns.values\
+                and list_of_words[i] + " " + list_of_words[i + 1] in bigram_count.columns.values:
+            temp_list.append((list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2],
             ((trigram_count[list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]].values[0] + delta) /
-            float(bigram_count[list_of_words[i] + " " + list_of_words[i + 1]].values[0] + uni_count.columns.values.size))
-            if list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2] in trigram_count.columns.values
-            else (delta / float(bigram_count[list_of_words[i] + " " + list_of_words[i + 1]].values[0] + uni_count.columns.values.size))
-            for i in xrange(len(list_of_words) - 2)}
+            float(bigram_count[list_of_words[i] + " " + list_of_words[i + 1]].values[0] + uni_count.columns.values.size))))
+
+        # trigram in dictionnary and bigram doesnt exists
+        elif list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2] in trigram_count.columns.values\
+                and list_of_words[i] + " " + list_of_words[i + 1] not in bigram_count.columns.values:
+            temp_list.append((list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2],
+            ((trigram_count[list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]].values[0] + delta) /
+            uni_count.columns.values.size)))
+
+        else:
+            temp_list.append((list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2],
+                              (delta / float(uni_count.columns.values.size))))
+    proba_dict = dict(temp_list)
     return proba_dict
 
 def interpolation_trigram_model(list_of_words, unigram_count, bigram_count, trigram_count, N=count_token(), lambda1=None, lambda2=None, lambda3=None):
     """ Apply the interpolation lissage"""
+
+    # A modifier
     assert 0 < lambda3 <= 1, "wrong value"
     assert 0 < lambda2 <= 1, "wrong value"
     assert 0 < lambda1 <= 1, "wrong value"
@@ -263,6 +281,7 @@ def interpolation_trigram_model(list_of_words, unigram_count, bigram_count, trig
     uni_count = pd.read_csv(unigram_count)
     bigram_count = pd.read_csv(bigram_count)
     trigram_count = pd.read_csv(trigram_count)
+
     proba_dict = {list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]:
                       lambda1 * ((trigram_count[list_of_words[i] + " " + list_of_words[i + 1] + " " + list_of_words[i + 2]].values[0]) / float(bigram_count[list_of_words[i] + " " + list_of_words[i + 1]].values[0])) +
                       lambda2 * (bigram_count[list_of_words[i] + " " + list_of_words[i + 1]].values[0] / float(uni_count[list_of_words[i]].values[0])) +
@@ -301,7 +320,7 @@ def generate_sentence(ligne):
     """ Take a line, split it in words and return all the possible combinaison into a list of list"""
     return [subset for subset in permutations(ligne, len(ligne))]
 
-def bigram_experiments(test_file, laplace=None, interpolation=None):
+def bigram_experiments(test_file, number_of_combinaison=20, laplace=None, interpolation=None):
     if laplace is None and interpolation is None:
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
@@ -310,13 +329,16 @@ def bigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp}
                 sentences = generate_sentence(d)
-                print sentences
-                model_bi = bigram_model(list_of_words=d, unigram_count="unigram_count_dictionnary.csv",
+                sentences = random.sample(sentences, number_of_combinaison)
+                # print sentences
+                for s in sentences:
+                    # print s
+                    model_bi = bigram_model(list_of_words=list(s), unigram_count="unigram_count_dictionnary.csv",
                                         bigram_count="bigram_count_dictionnary.csv")
-                if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
-                    pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
-                    best_sentence["sentence"] = " ".join(d)
-                    best_sentence["pp"] = pp
+                    if perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi) < pp:
+                        pp = perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi)
+                        best_sentence["sentence"] = " ".join(list(s))
+                        best_sentence["pp"] = pp
                 print best_sentence
 
     elif laplace:
@@ -328,17 +350,19 @@ def bigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp, "delta": 0}
                 sentences = generate_sentence(d)
-                print sentences
-                for delta in delta_list:
-                    model_bi = laplace_delta_bigram_model(list_of_words=d,
-                                                                  unigram_count="unigram_count_dictionnary.csv",
-                                                                  bigram_count="bigram_count_dictionnary.csv",
-                                                                  delta=delta)
-                    if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
-                        pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
-                        best_sentence["sentence"] = " ".join(d)
-                        best_sentence["pp"] = pp
-                        best_sentence["delta"] = delta
+                sentences = random.sample(sentences, number_of_combinaison)
+                # print sentences
+                for s in sentences:
+                    for delta in delta_list:
+                        model_bi = laplace_delta_bigram_model(list_of_words=list(s),
+                                                              unigram_count="unigram_count_dictionnary.csv",
+                                                              bigram_count="bigram_count_dictionnary.csv",
+                                                              delta=delta)
+                        if perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi) < pp:
+                            pp = perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi)
+                            best_sentence["sentence"] = " ".join(list(s))
+                            best_sentence["pp"] = pp
+                            best_sentence["delta"] = delta
                 print best_sentence
 
     elif interpolation:
@@ -351,24 +375,26 @@ def bigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp, "l2": 0, "l3": 0}
                 sentences = generate_sentence(d)
-                print sentences
-                for l2 in lambda2:
-                    for l3 in lambda3:
-                        model_bi_interpol = interpolation_bigram_model(list_of_words=d,
-                                                                       unigram_count="unigram_count_dictionnary.csv",
-                                                                       bigram_count="bigram_count_dictionnary.csv",
-                                                                       lambda2=l2, lambda3=l3)
-                        if perplexity_bigram_model(test_set=d,
-                                                   model_probability_of_the_test_set=model_bi_interpol) < pp:
-                            pp = perplexity_bigram_model(test_set=d,
-                                                         model_probability_of_the_test_set=model_bi_interpol)
-                            best_sentence["sentence"] = " ".join(d)
-                            best_sentence["pp"] = pp
-                            best_sentence["l2"] = l2
-                            best_sentence["l3"] = l3
+                sentences = random.sample(sentences, number_of_combinaison)
+                # print sentences
+                for s in sentences:
+                    for l2 in lambda2:
+                        for l3 in lambda3:
+                            model_bi_interpol = interpolation_bigram_model(list_of_words=list(s),
+                                                                           unigram_count="unigram_count_dictionnary.csv",
+                                                                           bigram_count="bigram_count_dictionnary.csv",
+                                                                           lambda2=l2, lambda3=l3)
+                            if perplexity_bigram_model(test_set=list(s),
+                                                       model_probability_of_the_test_set=model_bi_interpol) < pp:
+                                pp = perplexity_bigram_model(test_set=list(s),
+                                                             model_probability_of_the_test_set=model_bi_interpol)
+                                best_sentence["sentence"] = " ".join(list(s))
+                                best_sentence["pp"] = pp
+                                best_sentence["l2"] = l2
+                                best_sentence["l3"] = l3
                 print best_sentence
 
-def trigram_experiments(test_file, laplace=None, interpolation=None):
+def trigram_experiments(test_file, number_of_combinaison=2, laplace=None, interpolation=None):
     if laplace is None and interpolation is None:
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
@@ -377,12 +403,14 @@ def trigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp}
                 sentences = generate_sentence(d)
-                print sentences
-                model_tri = trigram_model(list_of_words=d, bigram_count="bigram_count_dictionnary.csv", trigram_count="trigram_count_dictionnary.csv")
-                if perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri) < pp:
-                    pp = perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri)
-                    best_sentence["sentence"] = " ".join(d)
-                    best_sentence["pp"] = pp
+                sentences = random.sample(sentences, number_of_combinaison)
+                # print sentences
+                for s in sentences:
+                    model_tri = trigram_model(list_of_words=list(s), bigram_count="bigram_count_dictionnary.csv", trigram_count="trigram_count_dictionnary.csv")
+                    if perplexity_trigram_model(test_set=list(s), model_probability_of_the_test_set=model_tri) < pp:
+                        pp = perplexity_trigram_model(test_set=list(s), model_probability_of_the_test_set=model_tri)
+                        best_sentence["sentence"] = " ".join(list(s))
+                        best_sentence["pp"] = pp
                 print best_sentence
 
     elif laplace:
@@ -394,18 +422,19 @@ def trigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp, "delta": 0}
                 sentences = generate_sentence(d)
-                print sentences
-                for delta in delta_list:
-                    model_tri = laplace_delta_trigram_model(list_of_words=d,
-                                                          unigram_count="unigram_count_dictionnary.csv",
-                                                          bigram_count="bigram_count_dictionnary.csv",
-                                                          trigram_count="trigram_count_dictionnary.csv",
-                                                          delta=delta)
-                    if perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri) < pp:
-                        pp = perplexity_trigram_model(test_set=d, model_probability_of_the_test_set=model_tri)
-                        best_sentence["sentence"] = " ".join(d)
-                        best_sentence["pp"] = pp
-                        best_sentence["delta"] = delta
+                sentences = random.sample(sentences, number_of_combinaison)
+                for s in sentences:
+                    for delta in delta_list:
+                        model_tri = laplace_delta_trigram_model(list_of_words=list(s),
+                                                                unigram_count="unigram_count_dictionnary.csv",
+                                                                bigram_count="bigram_count_dictionnary.csv",
+                                                                trigram_count="trigram_count_dictionnary.csv",
+                                                                delta=delta)
+                        if perplexity_trigram_model(test_set=list(s), model_probability_of_the_test_set=model_tri) < pp:
+                            pp = perplexity_trigram_model(test_set=list(s), model_probability_of_the_test_set=model_tri)
+                            best_sentence["sentence"] = " ".join(list(s))
+                            best_sentence["pp"] = pp
+                            best_sentence["delta"] = delta
                 print best_sentence
 
     elif interpolation:
@@ -419,30 +448,31 @@ def trigram_experiments(test_file, laplace=None, interpolation=None):
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp, "l1": 0, "l2": 0, "l3": 0}
                 sentences = generate_sentence(d)
-                print sentences
-                for l1 in lambda1:
-                    for l2 in lambda2:
-                        for l3 in lambda3:
-                            model_bi_interpol = interpolation_trigram_model(list_of_words=d,
-                                                                            unigram_count="unigram_count_dictionnary.csv",
-                                                                            bigram_count="bigram_count_dictionnary.csv",
-                                                                            trigram_count="trigram_count_dictionnary.csv",
-                                                                            lambda1=l1, lambda2=l2, lambda3=l3)
-                            if perplexity_trigram_model(test_set=d,
-                                                        model_probability_of_the_test_set=model_bi_interpol) < pp:
-                                pp = perplexity_trigram_model(test_set=d,
-                                                              model_probability_of_the_test_set=model_bi_interpol)
-                                best_sentence["sentence"] = " ".join(d)
-                                best_sentence["pp"] = pp
-                                best_sentence["l1"] = l1
-                                best_sentence["l2"] = l2
-                                best_sentence["l3"] = l3
+                sentences = random.sample(sentences, number_of_combinaison)
+                for s in sentences:
+                    for l1 in lambda1:
+                        for l2 in lambda2:
+                            for l3 in lambda3:
+                                model_bi_interpol = interpolation_trigram_model(list_of_words=list(s),
+                                                                                unigram_count="unigram_count_dictionnary.csv",
+                                                                                bigram_count="bigram_count_dictionnary.csv",
+                                                                                trigram_count="trigram_count_dictionnary.csv",
+                                                                                lambda1=l1, lambda2=l2, lambda3=l3)
+                                if perplexity_trigram_model(test_set=list(s),
+                                                            model_probability_of_the_test_set=model_bi_interpol) < pp:
+                                    pp = perplexity_trigram_model(test_set=list(s),
+                                                                  model_probability_of_the_test_set=model_bi_interpol)
+                                    best_sentence["sentence"] = " ".join(list(s))
+                                    best_sentence["pp"] = pp
+                                    best_sentence["l1"] = l1
+                                    best_sentence["l2"] = l2
+                                    best_sentence["l3"] = l3
                 print best_sentence
 
 def main():
     # count_n_gram()
-    bigram_experiments(test_file="listes_en_desordre.txt")
-    trigram_experiments(test_file="listes_en_desordre.txt")
+    # bigram_experiments(test_file="listes_en_desordre.txt", laplace=True)
+    trigram_experiments(test_file="listes_en_desordre.txt", laplace=True)
 
 if __name__ == '__main__':
     main()
