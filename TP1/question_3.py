@@ -6,6 +6,7 @@ import csv
 from itertools import permutations
 from collections import defaultdict
 import random
+from random import shuffle
 start_phrase = "<s>"
 end_phrase = "</s>"
 def count_token():
@@ -316,11 +317,12 @@ def perplexity_trigram_model(test_set, model_probability_of_the_test_set):
             log_proba += np.log10(model_probability_of_the_test_set[test_set[i] + " " + test_set[i + 1] + " " + test_set[i + 2]])
     return np.exp(- log_proba / float(N))
 
-def generate_sentence(ligne):
-    """ Take a line, split it in words and return all the possible combinaison into a list of list"""
-    return [subset for subset in permutations(ligne, len(ligne))]
+# def generate_sentence(ligne, number_of_permutation):
+#     """ Take a line, split it in words and return all the possible combinaison into a list of list"""
+#     # return [subset for subset in permutations(ligne, len(ligne))]
+#     return [shuffle(ligne) for _ in xrange(number_of_permutation)]
 
-def bigram_experiments(test_file, number_of_combinaison=20, laplace=None, interpolation=None):
+def bigram_experiments(validation_file, test_file, number_of_permutation=5, laplace=None, interpolation=None):
     if laplace is None and interpolation is None:
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
@@ -328,70 +330,108 @@ def bigram_experiments(test_file, number_of_combinaison=20, laplace=None, interp
             for d in data:
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp}
-                sentences = generate_sentence(d)
-                sentences = random.sample(sentences, number_of_combinaison)
+                # sentences = generate_sentence(d, number_of_permutation)
+                # sentences = random.sample(sentences, number_of_combinaison)
                 # print sentences
-                for s in sentences:
-                    # print s
-                    model_bi = bigram_model(list_of_words=list(s), unigram_count="unigram_count_dictionnary.csv",
+                for perm in xrange(number_of_permutation):
+                    shuffle(d)
+                    model_bi = bigram_model(list_of_words=d, unigram_count="unigram_count_dictionnary.csv",
                                         bigram_count="bigram_count_dictionnary.csv")
-                    if perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi) < pp:
-                        pp = perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi)
-                        best_sentence["sentence"] = " ".join(list(s))
+                    if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
+                        pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
+                        best_sentence["sentence"] = " ".join(d)
                         best_sentence["pp"] = pp
                 print best_sentence
 
     elif laplace:
         delta_list = [0.1, 0.002, 0.5, 0.01, 0.05, 0.8]
+        pp_delta = np.zeros((len(delta_list), ), dtype=float)
+        with open(validation_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            data = random.sample(data, 15)
+            for i,delta in enumerate(delta_list):
+                for d in data:
+                    # print d
+                    pp = 1e10000
+                    best_sentence = {"sentence": [], "model_bi": {}, "pp": 0.0}
+                    for perm in xrange(number_of_permutation):
+                        shuffle(d)
+                        model_bi = laplace_delta_bigram_model(list_of_words=d,
+                                                              unigram_count="unigram_count_dictionnary.csv",
+                                                              bigram_count="bigram_count_dictionnary.csv",
+                                                              delta=delta)
+                        #print model_bi
+                        if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
+                            pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
+                            best_sentence["sentence"] = " ".join(d)
+                            best_sentence["model_bi"] = model_bi
+                            best_sentence["pp"] = pp
+                    pp_delta[i] += pp
+        print "Validation is done with best delta", delta_list[np.argmin(pp_delta)]
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
             data = [line[:-1].split(" ") for line in lignes]
             for d in data:
                 pp = 1e10000
-                best_sentence = {"sentence": " ", "pp": pp, "delta": 0}
-                sentences = generate_sentence(d)
-                sentences = random.sample(sentences, number_of_combinaison)
-                # print sentences
-                for s in sentences:
-                    for delta in delta_list:
-                        model_bi = laplace_delta_bigram_model(list_of_words=list(s),
+                best_sentence = {"sentence": " ", "pp": pp}
+                for perm in xrange(number_of_permutation):
+                    shuffle(d)
+                    model_bi = laplace_delta_bigram_model(list_of_words=d,
                                                               unigram_count="unigram_count_dictionnary.csv",
                                                               bigram_count="bigram_count_dictionnary.csv",
-                                                              delta=delta)
-                        if perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi) < pp:
-                            pp = perplexity_bigram_model(test_set=list(s), model_probability_of_the_test_set=model_bi)
-                            best_sentence["sentence"] = " ".join(list(s))
+                                                              delta=delta_list[np.argmin(pp_delta)])
+                    if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi) < pp:
+                            pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi)
+                            best_sentence["sentence"] = " ".join(d)
                             best_sentence["pp"] = pp
-                            best_sentence["delta"] = delta
                 print best_sentence
 
     elif interpolation:
         lambda2 = [0.002, 0.5, 0.01]
         lambda3 = [0.1, 0.5, 0.8]
+        pp_delta = np.zeros((len(lambda2), len(lambda3)), dtype=float)
+        with open(validation_file, 'r') as fichier:
+            lignes = fichier.readlines()
+            data = [line[:-1].split(" ") for line in lignes]
+            data = random.sample(data, 10)
+            for i,l2 in enumerate(lambda2):
+                for j, l3 in enumerate(lambda3):
+                    for d in data:
+                        pp = 1e10000
+                        best_sentence = {"sentence": [], "model_bi": {}}
+                        for perm in xrange(number_of_permutation):
+                            shuffle(d)
+                            model_bi_interpol = interpolation_bigram_model(list_of_words=d,
+                                                                           unigram_count="unigram_count_dictionnary.csv",
+                                                                           bigram_count="bigram_count_dictionnary.csv",
+                                                                           lambda2=l2, lambda3=l3)
+                            if perplexity_bigram_model(test_set=d,
+                                                       model_probability_of_the_test_set=model_bi_interpol) < pp:
+                                pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi_interpol)
+                                best_sentence["sentence"] = " ".join(d)
+                                best_sentence["model_bi"] = model_bi_interpol
+
+                    pp_delta[i][j] += perplexity_bigram_model(test_set=best_sentence["sentence"],
+                                                          model_probability_of_the_test_set=best_sentence["model_bi"])
+
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
             data = [line[:-1].split(" ") for line in lignes]
             for d in data:
                 pp = 1e10000
-                best_sentence = {"sentence": " ", "pp": pp, "l2": 0, "l3": 0}
-                sentences = generate_sentence(d)
-                sentences = random.sample(sentences, number_of_combinaison)
-                # print sentences
-                for s in sentences:
-                    for l2 in lambda2:
-                        for l3 in lambda3:
-                            model_bi_interpol = interpolation_bigram_model(list_of_words=list(s),
-                                                                           unigram_count="unigram_count_dictionnary.csv",
-                                                                           bigram_count="bigram_count_dictionnary.csv",
-                                                                           lambda2=l2, lambda3=l3)
-                            if perplexity_bigram_model(test_set=list(s),
-                                                       model_probability_of_the_test_set=model_bi_interpol) < pp:
-                                pp = perplexity_bigram_model(test_set=list(s),
-                                                             model_probability_of_the_test_set=model_bi_interpol)
-                                best_sentence["sentence"] = " ".join(list(s))
-                                best_sentence["pp"] = pp
-                                best_sentence["l2"] = l2
-                                best_sentence["l3"] = l3
+                best_sentence = {"sentence": " ", "pp": pp}
+                for perm in xrange(number_of_permutation):
+                    shuffle(d)
+                    model_bi_interpol = interpolation_bigram_model(list_of_words=d,
+                                                                    unigram_count="unigram_count_dictionnary.csv",
+                                                                    bigram_count="bigram_count_dictionnary.csv",
+                                                                    lambda2=lambda2[np.argmin(pp_delta, axis=1)[0]],
+                                                                   lambda3=lambda3[np.argmin(pp_delta, axis=1)[1]])
+                    if perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi_interpol) < pp:
+                        pp = perplexity_bigram_model(test_set=d, model_probability_of_the_test_set=model_bi_interpol)
+                        best_sentence["sentence"] = " ".join(d)
+                        best_sentence["pp"] = pp
                 print best_sentence
 
 def trigram_experiments(test_file, number_of_combinaison=2, laplace=None, interpolation=None):
@@ -399,6 +439,7 @@ def trigram_experiments(test_file, number_of_combinaison=2, laplace=None, interp
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()
             data = [line[:-1].split(" ") for line in lignes]
+
             for d in data:
                 pp = 1e10000
                 best_sentence = {"sentence": " ", "pp": pp}
@@ -471,7 +512,8 @@ def trigram_experiments(test_file, number_of_combinaison=2, laplace=None, interp
 
 def main():
     # count_n_gram()
-    # bigram_experiments(test_file="listes_en_desordre.txt", laplace=True)
+    bigram_experiments(validation_file="corpus_small.txt", test_file="listes_en_desordre.txt", laplace=True)
+    exit()
     trigram_experiments(test_file="listes_en_desordre.txt", laplace=True)
 
 if __name__ == '__main__':
