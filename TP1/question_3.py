@@ -322,7 +322,7 @@ def perplexity_trigram_model(test_set, model_probability_of_the_test_set):
 #     # return [subset for subset in permutations(ligne, len(ligne))]
 #     return [shuffle(ligne) for _ in xrange(number_of_permutation)]
 
-def bigram_experiments(validation_file, test_file, number_of_permutation=5, laplace=None, interpolation=None):
+def bigram_experiments(validation_file, test_file, number_of_permutation=20, laplace=None, interpolation=None):
     if laplace is None and interpolation is None:
         with open(test_file, 'r') as fichier:
             lignes = fichier.readlines()

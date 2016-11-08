@@ -1,0 +1,149 @@
+WORDLIST: , city discovered in new usa york
+ORDERED: discovered in new york city , usa
+
+WORDLIST: <s> city had has new york
+ORDERED: <s> new york city has had 
+
+WORDLIST: calls city from getting is it new now york
+ORDERED: it is now getting calls from new york city
+
+WORDLIST: a after city developed fever from guinea new returning to york
+ORDERED: developed a fever after returning to new york city from guinea
+
+WORDLIST: . </s> city ebola for in new positive tested who york
+ORDERED: who tested positive for ebola in new york city . </s>
+
+WORDLIST: 's . </s> a address been email friend has link sent to your
+ORDERED: a link has been sent to your friend 's email address . </s>
+
+WORDLIST: do governors n't scientists the the trust
+ORDERED: the governors do n't trust the scientists
+
+WORDLIST: does governors house n't the the trust white
+ORDERED: the white house does n't trust the governors
+
+WORDLIST: administrators do hospital n't nurses trust
+ORDERED: nurses do n't trust hospital administrators
+
+WORDLIST: <s> date latest stay the to up updates with
+ORDERED: <s> stay up to date with the latest updates
+
+WORDLIST: , <s> all are date of tests the to
+ORDERED: <s> to date , all of the tests are
+
+WORDLIST: <s> is next step test the the to vaccine
+ORDERED: <s> the next step is to test the vaccine 
+
+WORDLIST: an into next the time unknown walk we
+ORDERED: the next time we walk into an unknown
+
+WORDLIST: ebola emerges from next the time
+ORDERED: the next time ebola emerges from 
+
+WORDLIST: days few know next the they will within
+ORDERED: they will know within the next few days
+
+WORDLIST: <s> is next step test the the to vaccine
+ORDERED: <s> the next step is to test the vaccine
+
+WORDLIST: . </s> and soap stop the then to virus with
+ORDERED: and then with soap to stop the virus . </s>
+
+WORDLIST: collaboration in press the with
+ORDERED: in collaboration with the press
+
+WORDLIST: discovered first the virus was
+ORDERED: the virus was first discovered
+
+WORDLIST: by doctors infected the virus
+ORDERED: doctors infected by the virus
+
+WORDLIST: and centers control disease federal for prevention the
+ORDERED: the federal centers for disease control and prevention
+
+WORDLIST: ebola email get in news updates your
+ORDERED: get ebola news updates in your email
+
+WORDLIST: address email enter mobile number or phone your
+ORDERED: enter your email address or mobile phone number
+
+WORDLIST: center chancellor medical nebraska of university
+ORDERED: university of nebraska medical center chancellor
+
+WORDLIST: of of pittsburgh president the university
+ORDERED: president of the university of pittsburgh
+
+WORDLIST: an disease ebola of outbreak virus
+ORDERED: an outbreak of ebola virus disease
+
+WORDLIST: claimed disease ebola has lives many of outbreak people the the virus
+ORDERED: the ebola virus disease outbreak has claimed the lives of many people
+
+WORDLIST: enter mobile number phone your
+ORDERED: enter your mobile phone number
+
+WORDLIST: center in located medical nebraska of omaha the university
+ORDERED: the university of nebraska medical center located in omaha
+
+WORDLIST: monrovia of the university
+ORDERED: the university of monrovia
+
+WORDLIST: leone of president sierra the vice
+ORDERED: the vice president of sierra leone
+
+WORDLIST: new reported the times york
+ORDERED: the new york times reported
+
+WORDLIST: do n't nurses them trust
+ORDERED: nurses do n't trust them
+
+WORDLIST: anyone do i n't particularly trust
+ORDERED: i do n't particularly trust anyone
+
+WORDLIST: all are date of tests the to up
+ORDERED: all of the tests are up to date
+
+WORDLIST: is next step the this why
+ORDERED: this is why the next step
+
+WORDLIST: by discovered first the virus was
+ORDERED: the virus was first discovered by
+
+WORDLIST: by in infected persons population the the virus
+ORDERED: persons in the population infected by the virus
+
+WORDLIST: . a barack city in is new not obama writer york
+ORDERED: barack obama is not a writer in new york city .
+
+WORDLIST: al and as biden both chief former gore joe of president president served staff to vice vice who
+ORDERED: who served as chief of staff to both vice president joe biden and former vice president al gore
+
+WORDLIST: asking barack congress emergency for funding is obama president us
+ORDERED: us president barack obama is asking congress for emergency funding
+
+WORDLIST: . </s> <s> a africa ban impose obama on president recommend to to travel west you
+ORDERED: <s> you recommend to president obama to impose a travel ban on west africa . </s>
+
+WORDLIST: a day do several they this times
+ORDERED: they do this several times a day
+
+WORDLIST: . </s> <s> a day do several they this times
+ORDERED: <s> they do this several times a day . </s>
+
+WORDLIST: about find more out to tomorrow
+ORDERED: to find out more tomorrow about
+
+WORDLIST: african all countries deny from people to visas west
+ORDERED: deny visas to all people from west african countries
+
+WORDLIST: ? becoming ebola infected is of risk the what with
+ORDERED: what is the risk of becoming infected with ebola ?
+
+WORDLIST: at available for is no present there this time vaccine virus
+ORDERED: at present time there is no available vaccine for this virus
+
+WORDLIST: bad by contact definitely is its news of patients probability spreading the the with
+ORDERED: the bad news is definitely its probability of spreading by contact with the patients
+
+WORDLIST: . </s> <s> and cocktail common deadly drug ebola is most most new of of on strain strain tested the the the the virus was which zaire
+ORDERED: <s> the new drug cocktail was tested on the zaire strain of ebola which is the most common and most deadly strain of the virus . </s>
