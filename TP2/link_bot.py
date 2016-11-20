@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os, random, sys, time, urlparse
-
-from psutil import Popen
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import codecs
+
+
+download_dir = '/home/prtos/Downloads'
+results_dir = "results"
 
 
 def getPeopleLinks(page):
@@ -26,7 +28,6 @@ def getResume(page):
         url = link.get('href')
         if url:
             if 'pdf_pro_full' in url:
-                print 'url_resume', url
                 return url
                 # return link_resume
 
@@ -58,9 +59,8 @@ def LInBot(browser):
     pList = []
     # count
     count = 0
-    download_dir = '/home/Downloads/resumes_linkedin'
-    outfile = codecs.open('Resumes_IDs.txt', 'w+', 'utf8')
-    while True and count <= 1500:
+    outfile = codecs.open('Resumes_IDs.txt', 'a', 'utf8')
+    while True and count <= 6000:
         count += 1
         # sleep to make sure everything loads, add random to make us look human.
         time.sleep(random.uniform(1, 4))
@@ -81,24 +81,31 @@ def LInBot(browser):
         if pList:  # if there is people to look at look at them people to visit
             # the person on the top of the list
             person = pList.pop()
-            print 'person', person
             browser.get(person)
             page = BeautifulSoup(browser.page_source)
-            print 'get to person'
             resume = getResume(page)
             ID = getID(resume)
             ID = ID.decode('utf-8')
             ID = ID.encode('utf-8')
-            print type(ID)
-            Name = getName(resume).encode('utf-8')
-            # print 'resume',ID, Name
-            browser.get('https://www.linkedin.com/' + resume)
-            time.sleep(random.uniform(20, 45))
-            if os.path.exists(download_dir + '/' + Name + '.pdf'):
-                outfile.write(ID + '\t' + Name + '\n')
-                new_name = download_dir + '/' + str(ID) + '.pdf'
-                os.rename(download_dir + '/' + Name + '.pdf', new_name)
-                Popen("pdftotext " + new_name, shell=True)
+            try:
+                name = getName(resume).encode('utf-8')
+                correct_name = True
+            except:
+                continue
+            print ID, name,
+            if correct_name:
+                before_download = os.listdir(download_dir)
+                browser.get('https://www.linkedin.com/' + resume)
+                time.sleep(random.uniform(5, 15))
+                after_download = os.listdir(download_dir)
+                change = set(after_download) - set(before_download)
+                full_name = download_dir + '/' + change.pop()
+
+                if os.path.exists(full_name):
+                    print "downloaded"
+                    outfile.write(ID + '\t' + name + '\n')
+                    os.system("pdftotext -htmlmeta {} {}/{}.txt".format(full_name.replace(' ', '\\ '), results_dir, ID))
+                os.remove(full_name)
 
         print "[+] " + browser.title + " Visited! \n(" \
               + str(count) + "/" + str(len(pList)) + ") Visited/Queue)"
@@ -115,6 +122,8 @@ if __name__ == '__main__':
         visitedUsersFile = open('visitedUsers.txt', 'wb')
         visitedUsersFile.close()
 
+    # options = webdriver.ChromeOptions()
+    # options.add_experimental_option('prefs', {'download.default_directory': download_dir})
     print '\nLaunching Chrome'
     browser = webdriver.Chrome()
 

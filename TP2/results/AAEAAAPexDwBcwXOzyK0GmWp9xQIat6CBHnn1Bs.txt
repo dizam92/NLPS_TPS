@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="Creator" content="Apache FOP Version 1.1"/>
+<meta name="Producer" content="Apache FOP Version 1.1"/>
+<meta name="CreationDate" content=""/>
+</head>
+<body>
+<pre>
+Youai Hao
+Postdoc at University of Guelph
+
+Experience
+Postdoc at University of Guelph
+January 2010 - Present (6 years 11 months)
+In 2010, I joined Dr. Joseph Lam's lab to work on the human oportunistic pathogen Pseudomonas aeruginosa,
+more specifically, on the important virulence factor lipopolysaccharide. In 2011, I obained the cystic fibrosis
+canada (CFC) postdoctral fellowship to continue work on the biosynthesis, structure and function of the
+common polysaccharide antigen (CPA) of P. aeruginosa. In 2014, the fellowship is renewed for another year.
+I am currently performing biofilm studies of different P. aeruginosa LPS mutants as well as characterizing
+the functions and structures of some enzymes involved in CPA biosynthesis.
+
+Education
+University of Waterloo
+Ph. D, Molecular biology, Microbiology, 2005 - 2009
+Peking University
+Plant genetics and protein engineering, 2002 - 2004
+Shandong University
+Bachelor’s Degree, Biotechnology, 1998 - 2002
+Shandong University
+
+Page1
+
+Youai Hao
+Postdoc at University of Guelph
+
+Contact Youai on LinkedIn
+
+Page2
+
+</pre>
+</body>
+</html>
