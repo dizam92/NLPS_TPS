@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="Creator" content="Apache FOP Version 1.1"/>
+<meta name="Producer" content="Apache FOP Version 1.1"/>
+<meta name="CreationDate" content=""/>
+</head>
+<body>
+<pre>
+Sarah Tarle
+--
+
+Experience
+Associate Product Manager at Syneron Beauty Inc.
+September 2011 - Present (5 years 3 months)
+Marketing Specialist at Pharos Life Corporation
+September 2007 - August 2011 (4 years)
+
+Education
+Conestoga College
+Business Administration Marketing Co-op, Marketing, 2005 - 2007
+University of Waterloo
+2001 - 2003
+
+Page1
+
+Sarah Tarle
+--
+
+Contact Sarah on LinkedIn
+
+Page2
+
+</pre>
+</body>
+</html>

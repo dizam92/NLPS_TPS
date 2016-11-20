@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="Creator" content="Apache FOP Version 1.1"/>
+<meta name="Producer" content="Apache FOP Version 1.1"/>
+<meta name="CreationDate" content=""/>
+</head>
+<body>
+<pre>
+Charith Adkar
+Post doc at University of Sherbrooke
+
+Summary
+Highly focused, results-driven Research Scientist in Microbiology/Molecular biology with credible experience
+in field of bioinformatics, biotechnology, plant pathology, plant science and bioinformatics equipped with
+extensive research background in the international laboratories; possesses outstanding ability to analyze,
+gather, write, evaluate and produce detailed reports on critical projects. Adept in conducting initial research,
+providing data analysis, evaluating and then developing viable solutions for efficient management of plant
+pathogens; authored relevant publications.
+Specialties: Isolation and identification of microbes, fungal and bacterial culture maintenance, disease
+tolereance screening techniques in crops, DNA, RNA isolation, RT-PCR, qPCR, Blotting techniques (Northern
+and Western), protein purification, amiRNA, vector construction, cloning, RLM-RACE, PARE (degradome),
+RNA secondary structure prediction (SHAPE), RNAi, transgenics.
+
+Experience
+Post doctoral fellow at Université de Sherbrooke
+October 2012 - Present (4 years 2 months)
+(i) Structural elucidation of RNA molecules (viroids) in solution: Preparation of dimeric RNA molecules,
+transcription, performing genotypic and data interpretation using QuShape software.
+(ii) Identification of viroid derived small RNA targets in tomato plants: bioassay of tomato plants various
+viroids, total RNA extraction, small RNA purification, RT-PCR, RT-qPCR, deep sequence data analysis,
+interpretation of viroid derive small RNA targets in tomato genome, cloning, designing and performing
+artificial microRNA (amiRNA) experiments, 5'-RLM RACE, PARE (degradome) analysis, fluorescence
+microscopy.
+JSPS post doctoral fellow at Hirosaki University
+September 2010 - September 2012 (2 years 1 month)
+(i) RNAi mediated resistance against multiple viroid infection: deep sequencing of viroid derived small
+RNA, profiling of viroid derived small RNA on viroid genome, Inverted repeated (hairpin) construction of
+various viroid structural/functional domains for RNA silencing, developed seven inverted repeat constructs,
+trangenic Nicotiana benthamiana lines, transgenic tomato plants, blotting, infection tolereance screening,
+accumulation of small RNA.
+
+Page1
+
+(ii) Effect of pesticides on microbial deveristy in apple orchards: (a) soil sample: soil sample collection,
+isolation of DNA, PCR, cloning, sequencing (ABI 3500 Genetic analyzer), Sequencing alingment and data
+analysis, sample preparation of deep sequencing (Roche 454) for bacterial and fungal diversity.
+(b) apple phyllosphere: soil collection, enrichment of bacteria, DNA purification (elimination of chloroplast
+and mitochondrial DNA), PCR, cloning, sequence analysis, development of macro-array for the detection of
+pathogenic microbes.
+(iii) Viroid diversity in Japan, China and India: Sample collection, RNA extraction, 2D-PAGE, Sequential
+PAGE, bioassay, RT-PCR, primer designing, phylogenetic analysis, profiling of viroid diversity.
+Visiting Scientist at Sri Jayachamarajendra College of Engineering
+February 2010 - August 2010 (7 months)
+- Conducted experiments to develop sap mediated nucleic acid preparation from woody plants for the PCR
+based detection of various plant pathogens such as Liberibacter, phytoplasma, viroids and viruses.
+- Developed SNP based molecular diagnosis kit for the identification of phytoplasma associated with sandal
+spike disease of sandalwood (Santalum album).
+International Ph.D. student at University of Milan
+November 2006 - January 2010 (3 years 3 months)
+- Detected and characterised phytoplasma associated with yellows disease of black pepper.
+- Characterized multiple genes of Coorg black pepper yellows phytoplasma.
+- Characterized multiple genes of Liberibacter asiaticus responsible for huanglongbing disease of citrus in
+India.
+- Proposed genetic lineages for the classification of Liberibacter asiaticus.
+- Designed and optimised conditions of simultaneous detection of Liberibacter asiaticus and Citrus tristeza
+virus (CTV).
+Research Scholar at University of Mysore
+October 2002 - December 2006 (4 years 3 months)
+- Worked on detection of causative agent responsible for yellow leaf disease of Areca catechu L., in India.
+- Designed and performed experiments for the detection of Phomopsis azardirachtae, causative agent of dieback disease of neem trees.
+- Designed and performed molecular biology experiments for the detection of Listeria monocytogenes from
+ice cream and fish samples.
+- Standardised molecular biology protocols for the detection of Fusarium sp., from various grains.
+
+Page2
+
+Guest Faculty at University of Mysore
+August 2006 - November 2006 (4 months)
+- Taught Virology and Soil Microbiology for Master's students.
+- Planned and taught laboratory techniques in Virology, Food Microbiology and General Microbiology.
+- Guided students for various debate competitions.
+Guest Faculty at Yuvaraja's College, University of Mysore
+August 2005 - February 2006 (7 months)
+- Taught General Microbiology, Genetic Engineering and Molecular Biology for undergraduate student.
+- Planned and taught laboratory techniques of basic Microbiology, Virology and Molecular Biology.
+- Planned lessons and assignments, graded papers and exams.
+- Participated in department activities to prepare materials for practical and theory examination.
+- Advised second and final year undergraduate students in preparing models for science exhibition.
+Guest Faculty at Yuvaraaja's College, University of Mysore
+August 2003 - March 2004 (8 months)
+Taught General Microbiology and Genetic Engineering to undergraduate students.
+- Planned and taught laboratory techniques in Microbiology.
+- Planned lessons and assignments, graded papers and exams.
+- Participated in department activities to prepare materials for practical and theory examination.
+Visiting Research Student at Hirosaki University
+September 2003 - November 2003 (3 months)
+- Worked on the identification of possible association of viroid and flagellated protozoa in yellow leaf disease
+of areca palms (Areca catechu L.,).
+- Used microscopic, PCR, RT-PCR and blotting techniques under the guidelines of Prof. Teruo Sano.
+
+Education
+Università degli Studi di Milano
+
+Page3
+
+Doctor of Philosophy (Ph.D.), Plant Biology and Crop Production (Plant Pathology), 2007 - 2010
+Activities and Societies: (i) Summer School on Risorse genetiche e fisiologia per una produzione sostenibile
+in agricoltura (Genetic and physiological resources for the production of sustainable agriculture), Parco
+tecnologico padano di Lodi, Italy. (ii) Summer School on Biomonitoring and bioremediation of contaminated
+soils, Parco tecnologico padano di Lodi, Lodi, Italy.
+University of Mysore
+Master of Science (M.Sc.), Microbiology, General, 2000 - 2002
+Activities and Societies: Participated in Clinical microbiology work shop at CSI Holdsworth Hospital, Mysore,
+India. (i) Life member of Indian Science Congress, India. (ii) Life member of National Academy of Biological
+Sciences, India. (iii) Life member of Indian Virological Society, India. (iv) Life member of Association of
+Microbiologists of India, India.
+St. Alyousis College, Managalore University
+Bachelor of Science (B.Sc.), Microbiology, Chemistry, Botany, 1997 - 2000
+Activities and Societies: Participated in (i)Mangalore University level seminar, Mangalore, India, (ii) Frontier
+Lectures held in University of Mangalore, India and, (iii) National level seminar in Cochin University of
+Science and Technology, Cochin, India.
+St. Phelomena's Boys High School, Puttur, India
+High School
+
+Page4
+
+Charith Adkar
+Post doc at University of Sherbrooke
+
+Contact Charith on LinkedIn
+
+Page5
+
+</pre>
+</body>
+</html>

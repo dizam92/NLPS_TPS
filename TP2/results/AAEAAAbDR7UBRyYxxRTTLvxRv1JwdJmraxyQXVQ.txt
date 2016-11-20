@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="Creator" content="Apache FOP Version 1.1"/>
+<meta name="Producer" content="Apache FOP Version 1.1"/>
+<meta name="CreationDate" content=""/>
+</head>
+<body>
+<pre>
+Duy Leo Nguyen
+Laboratory Technician
+
+Summary
+* Master of Science in Biochemistry, specializing in Cellular and Molecular Biology with 4 years of research
+experience.
+* Excellent tissue culture and aseptic techniques honed through 4 years of hands-on experience working with
+various mammalian and human cell lines.
+* One year experience working in a cGMP environment at Microbix Biosystems Inc. focused on tissue culture,
+viral infection, harvesting and processing of viral antigens.
+*
+One year of experience in microbiology working on bacterial culture to express different proteins.
+* Deep knowledge and practical experience in synthesizing, analyzing and purifying proteins and DNA: gel
+electrophoresis, immunostaining, Western Blots, PCR, RNA extraction, RT-PCR.
+* Knowledge of a broad spectrum of other biochemistry techniques (ELISA, flowcytometry)
+• Thorough understanding of WHMIS, GLP and cGMP.
+
+Experience
+Viral Manufacturing Technician at Microbix Biosystems Inc.
+January 2014 - Present (2 years 11 months)
+* Culturing (liquid nitrogen revival, maintenance, subculture) various mammalian and human cell lines
+(Vero, FRhK-4, MRC-5, MA104).
+#
+- Acquired strong aseptic techniques and experience working with flasks and roller bottles.
+* Infecting, harvesting and processing bulk materials of different viral antigens (Rubella, CMV, Dengue 2).
+#
+- Experienced in downstream techniques used in processing of protein (concentration, sonication,
+centrifugation and purification of proteins using sucrose gradient column).
+* Actively involving in training new members of the team.
+* Preparing sterile media, reagents and calibrating equipments following SOPs and GMPs.
+* General laboratory maintenance including autoclaving, cleaning and calibration of various laboratory
+equipment
+*
+Weekly environmental monitoring as per Quality Control requirements
+* Daily maintaining and completing batch production records (BPRs), reagent records, and the manufacturing
+inventory using the in-house inventory control program (GENIUS).
+Research Student at The Hospital for Sick Children
+May 2010 - June 2013 (3 years 2 months)
+* Conducted research at Dr. Daniela Rotin's laboratory in the Cell Biology department
+
+Page1
+
+* Performed screens and validations for different kinase inhibitors/drugs using different methods such as
+Western Blot and Ussing chamber using MDCK cells and #F508/ #F508 CF patient lung tissue.
+* Established working protocol for culturing MDCK cells expressing #F508-CFTR on inserts with
+permeable membrane and testing cells on Ussing chamber.
+* Acquired 3 years of experience in cell culture working with various cell lines (MDCK, HEK293) and
+techniques used in analyzing protein and DNA (Western Blot, ELISA, PCR, qPCR, RT-PCR)
+* Experienced in performing qPCR to quantify the degree of knock down of target genes.
+* Initiated the screen for chaperones that were involved in the rescue of #F508-CFTR by the indentified
+kinase inhibitors using qPCR array.
+* Publication: Use of kinase inhibitors to correct #F508-CFTR function. A. Trzcinska-Daneluti, L. Nguyen et
+al (2012) Molecular and Cellular Proteomics, 11(9): 745-757.
+Summer Intern at The Hospital for Sick Children
+May 2009 - September 2009 (5 months)
+• Generated DNA constructs and purified the two unique middle and N-terminal domains of dNedd4L fused
+with GST tag through bacterial expression.
+• Examined the inhibitor effect of these two domains on the Hect domain of dNedd4L by conducting in vitro
+binding and ubiquitination assays
+• Validated four possible substrate of dNedd4L by performing in vitro binding assays with the corresponding
+GST-tagged Middle or N-terminal domain.
+• Deep knowledge in microbiology techniques with one year of experience working with bacterial culture
+(PCR, RT-PCR DNA digestion, bacterial expression of protein, column chromatography for the purfication
+of protein, miniprep, maxiprep for DNA preparation)
+• Publication: A Splice Isoform of DNedd4, DNedd4-Long, Negatively Regulates Neuromuscular
+Synaptogenesis and Viability in Drosophila. Y. Zhong, A. Shtineman-Kotler, L. Nguyen et al (2011). PLoS
+One, 6(11)
+
+Education
+University of Toronto
+Master's degree, Biochemistry - Cellular and Molecular Biology, 2010 - 2013
+University of Toronto
+Bachelor's degree, Biochemistry, Economics, 2006 - 2010
+Bell High School
+Highschool diploma, 2004 - 2006
+
+Interests
+Bio pharmaceutical industry, digital photography, badminton, soccer
+
+Page2
+
+Duy Leo Nguyen
+Laboratory Technician
+
+Contact Duy Leo on LinkedIn
+
+Page3
+
+</pre>
+</body>
+</html>

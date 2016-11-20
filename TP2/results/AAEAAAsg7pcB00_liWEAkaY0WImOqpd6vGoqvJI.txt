@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="Creator" content="Apache FOP Version 1.1"/>
+<meta name="Producer" content="Apache FOP Version 1.1"/>
+<meta name="CreationDate" content=""/>
+</head>
+<body>
+<pre>
+Anky Lai
+Consumer Insights Analyst at Best Buy Canada
+
+Summary
+6 years of academic and professional experience conducting data and statistical analyses using SAS and SQL.
+Experienced with a variety of tools for data querying, data visualization, and statistical modeling: SAS, SQL,
+Excel, R, Envision5, Tableau.
+Knowledgeable in a variety of statistical methods: multiple linear and logistic regression, survival analysis,
+cluster analysis and others.
+Experienced with big data, querying and linking relational databases with various data sources.
+Quick-learner, hard working, detail-oriented, team player.
+
+Experience
+Consumer Insights Analyst at Best Buy Canada
+September 2015 - Present (1 year 3 months)
+Extract and analyze transactional data, linking with various internal sources when possible, to deliver
+meaningful customer insights to drive and influence key business decisions.
+Collaborate with eCommerce and marketing to build a holistic customer data mart and generate lists for
+targeted marketing campaigns.
+Provide database design recommendations to improve data quality and efficiency of analyses.
+Investigate machine learning techniques for text mining.
+Implemented an RFM segmentation model for tracking and monitoring customer health.
+Developed a monthly marketing dashboard to track and monitor business performance.
+Biostatistical Analyst at BC Cancer Agency
+November 2012 - September 2015 (2 years 11 months)
+Analyzed BC’s Screening Mammography Program data to report key performance/outcome indicators to
+assess and monitor the performance of the program across the province and regional Health Authorities.
+Collaborated with Statistics Canada and Canadian Partnership Against Cancer to develop a national
+microsimulation model for breast cancer.
+Provided statistical support to clinicians and researchers undertaking statistical outcome analyses for tumour
+groups and screening programs.
+Data Analyst at Provincial Health Services Authority
+January 2012 - November 2012 (11 months)
+Responsible for independent and collaborative analyses, interpretation, and reporting of cardiac data for
+healthcare professionals in BC, Ministry of Health, and other regional Health Authorities.
+
+Page1
+
+Responsible for the management of data in support of external clinical and policy research projects.
+Practicum Student at Institute for Work and Health
+September 2010 - April 2011 (8 months)
+Operations Research Analyst Intern at BC Children's Hospital, Vancouver
+September 2009 - August 2010 (1 year)
+Student Border Officer at Canada Border Services Agency
+2007 - 2009 (2 years)
+
+Volunteer Experience
+Casual Volunteer at Greater Vancouver Food Bank Society
+2013 - Present
+
+Education
+University of Toronto
+Master of Science (MSc), Biostatistics, 2010 - 2012
+UBC
+Bachelor of Science (BSc), Statistics, 2006 - 2010
+
+Page2
+
+Anky Lai
+Consumer Insights Analyst at Best Buy Canada
+
+1 person has recommended Anky
+"I worked with Anky as a Biostatistical Analyst at the British Columbia Cancer Agency for 1.5 years.
+Although we did not work on any projects together, she was always kind and ready to help with any questions
+that I had as I learned more about SAS programming and biostatistics. Anky delivered a presentation on
+PROC TABULATE at the Vancouver SAS User Group (VanSUG), and it turned out to be one of the most
+useful things that I learned in SAS. Her visual, step-by-step demonstration of this powerful procedure's
+capabilities was very easy to understand, and her sample code proved to be a great time saver in my work.
+I highly recommend SAS users to view that presentation on the VanSUG presentation archive. Anky was a
+friendly and helpful co-worker who brought positivity to our office, and our team was sad but excited for her
+as she departed for a new job in business analytics at Best Buy. She would be a valuable addition to any team
+that seeks her qualifications. "
+— Eric Cai, worked directly with Anky at BC Cancer Agency
+Contact Anky on LinkedIn
+
+Page3
+
+</pre>
+</body>
+</html>
